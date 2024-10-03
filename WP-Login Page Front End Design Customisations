@@ -1,0 +1,138 @@
+<?php
+/**
+ * WP-Login Page Front End Design Customisations // 
+ * */
+ 
+
+
+//Change the WordPress Login Page Logo
+function wpdocs_my_custom_login_logo() {
+    $custom_logo_url = 'LOGO URL HERE';
+    
+    if ( $custom_logo_url ) {
+        echo '<style type="text/css">
+            h1 a { 
+                background-image: url("' . esc_url($custom_logo_url) . '") !important; 
+                background-size: contain; /* Ensure the logo is fully visible */
+                }
+        </style>';
+    }
+}
+add_action( 'login_enqueue_scripts', 'wpdocs_my_custom_login_logo' );
+
+
+//Custom logo link URL 
+function custom_login_logo_url() {
+    return home_url(); // Returns the URL of the current site
+}
+add_filter( 'login_headerurl', 'custom_login_logo_url' );
+
+
+
+function custom_login_logo_title() {
+    return 'Welcome to Brighter Websites';
+}
+add_filter( 'login_headertext', 'custom_login_logo_title' );
+
+
+
+/*Custom Browser Page Tab Title 
+
+function custom_login_title() {
+    return 'Log in to "' . get_bloginfo('name') . '"'; // Returns the dynamic site title
+}
+add_filter( 'login_title', 'custom_login_title' );
+
+
+*///Custom Page CSS Applied to log in Page. 
+
+add_action( 'login_enqueue_scripts', 'custom_login_styles' );
+function custom_login_styles() {
+    echo '<style>   
+:root {
+  --customcol-primary: #d7fb00; /* Blue */
+  --customcol-secondary: #acc90a; /* Green */
+  --customcol-accent: #c3d67f; /* Red */
+  --customcol-text: #333333; /* Dark Gray */
+  --customcol-text--box:  #fbfbfb; /* text in box colours */
+  --customcol-background: #fdffe5; /* Full Page colour */
+  --customcol-background--box: #fff; /* Inside box colours */
+  --customfon-font-family: "Poppins", sans-serif;
+}
+        body.login {
+            background-color: var(--customcol-background)!important; /* Main Fill */
+            font-family: var(--customfon-font-family)!important;
+        }
+        .login form {
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            background-color: var(--customcol-background--box)!important;
+            border: 1px solid var(--customcol-primary)!important;
+        }
+        .wp-core-ui .button, .wp-core-ui .button-secondary,
+        input#wp-submit {
+            background: var(--customcol-background--box)!important;
+            border-color: var(--customcol-accent)!important;
+            color: var(--customcol-text)!important;
+            font-weight: 600;
+        }
+        
+        input#rememberme:focus,
+        input#user_pass:focus,
+        input#user_login:focus{
+            border-color:  var(--customcol-accent)!important;
+            box-shadow: 0 0 0 1px  var(--customcol-background--box)!important; ;
+        }
+        
+    input[type=checkbox]:checked::before {
+    content: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20448%20512%22%3E%3Cpath%20d%3D%22M440.667%20182.109l7.143-40c1.313-7.355-4.342-14.109-11.813-14.109h-74.81l14.623-81.891C377.123%2038.754%20371.468%2032%20363.997%2032h-40.632a12%2012%200%200%200-11.813%209.891L296.175%20128H197.54l14.623-81.891C213.477%2038.754%20207.822%2032%20200.35%2032h-40.632a12%2012%200%200%200-11.813%209.891L132.528%20128H53.432a12%2012%200%200%200-11.813%209.891l-7.143%2040C33.163%20185.246%2038.818%20192%2046.289%20192h74.81L98.242%20320H19.146a12%2012%200%200%200-11.813%209.891l-7.143%2040C-1.123%20377.246%204.532%20384%2012.003%20384h74.81L72.19%20465.891C70.877%20473.246%2076.532%20480%2084.003%20480h40.632a12%2012%200%200%200%2011.813-9.891L151.826%20384h98.634l-14.623%2081.891C234.523%20473.246%20240.178%20480%20247.65%20480h40.632a12%2012%200%200%200%2011.813-9.891L315.472%20384h79.096a12%2012%200%200%200%2011.813-9.891l7.143-40c1.313-7.355-4.342-14.109-11.813-14.109h-74.81l22.857-128h79.096a12%2012%200%200%200%2011.813-9.891zM261.889%20320h-98.634l22.857-128h98.634l-22.857%20128z%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E)!important;
+    margin: -.1875rem 0 0 -.25rem;
+    height: 1.3125rem;
+    width: 1.3125rem;
+}
+
+         
+        a.privacy-policy-link{
+           color: var(--customcol-accent)!important;
+           font-weight: 700;
+           font-size: 1.5em;
+           text-decoration: none;
+        }
+       
+        .language-switcher {
+            
+            display: flex!important;
+            flex-direction: column!important;
+            align-content: center!important;
+            flex-wrap: wrap!important;
+        }
+        form#language-switcher {
+            background: var(--customcol-background)!important;
+            border: none!important;
+            width: 350px;
+            padding: 20px;
+        }
+        .login h1 {
+            text-align: center;
+            border-radius: 5px;
+            height: 110px;
+            background: var(--customcol-background--box)!important;
+            border: 1px solid var(--customcol-primary)!important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+        }
+        .login h1 a{
+            background-position: center center !important;
+            background-size: 100% !important;
+            /* height: 200px !important; */
+            width: 100% !important;
+            margin: 0px!important;
+            
+                }
+    </style>';
+}
