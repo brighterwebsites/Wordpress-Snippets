@@ -1,0 +1,40 @@
+<?php
+
+// Increase memory limit
+if ( ! defined( 'WP_MEMORY_LIMIT' ) ) {
+    define( 'WP_MEMORY_LIMIT', '256M' ); // Set memory limit for normal operations
+}
+
+if ( ! defined( 'WP_MAX_MEMORY_LIMIT' ) ) {
+    define( 'WP_MAX_MEMORY_LIMIT', '512M' ); // Set maximum memory limit for admin tasks
+}
+
+// Increase maximum execution time
+if ( ! ini_get( 'max_execution_time' ) || ini_get( 'max_execution_time' ) < 300 ) {
+    ini_set( 'max_execution_time', '300' ); // Set max execution time to 5 minutes
+}
+
+// Increase PHP input time limit (helpful for large imports or exports)
+if ( ! ini_get( 'max_input_time' ) || ini_get( 'max_input_time' ) < 300 ) {
+    ini_set( 'max_input_time', '300' ); // Set max input time to 5 minutes
+}
+
+// Increase PHP post max size
+if ( ! ini_get( 'post_max_size' ) || ini_get( 'post_max_size' ) < '64M' ) {
+    ini_set( 'post_max_size', '64M' ); // Allow up to 64MB for POST data (forms, uploads)
+}
+
+// Increase PHP upload file size limit
+if ( ! ini_get( 'upload_max_filesize' ) || ini_get( 'upload_max_filesize' ) < '64M' ) {
+    ini_set( 'upload_max_filesize', '64M' ); // Set max upload file size to 64MB
+}
+
+// Increase the number of input vars to handle larger forms
+if ( ! ini_get( 'max_input_vars' ) || ini_get( 'max_input_vars' ) < 3000 ) {
+    ini_set( 'max_input_vars', '3000' ); // Handle larger forms with more inputs
+}
+
+// Enable compression for better page speed (if not already set in server)
+if ( ! ini_get( 'zlib.output_compression' ) ) {
+    ini_set( 'zlib.output_compression', 'On' ); // Enable GZIP compression
+}
