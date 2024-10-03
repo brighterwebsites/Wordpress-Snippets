@@ -1,0 +1,6 @@
+<?php
+
+function technumero_dns_prefetch() {
+echo '<meta name="theme-color" content="#000" >';
+}
+add_action('wp_head', 'technumero_dns_prefetch', 0);
