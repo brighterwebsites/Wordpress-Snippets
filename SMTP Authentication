@@ -1,0 +1,28 @@
+<?php
+
+
+// Support for SMPT Authentication - sends emails from Wordpress securely and reliably
+
+
+add_action('phpmailer_init', 'custom_smtp_settings');
+function custom_smtp_settings($phpmailer) {
+    $phpmailer->isSMTP();
+    $phpmailer->Host = 'ventraip.email'; // Replace with your SMTP server
+    $phpmailer->SMTPAuth = true; // Enable SMTP authentication
+    $phpmailer->Port = 465; // Replace with your SMTP port (587 for TLS, 465 for SSL)
+    $phpmailer->Username = 'you@yours.com'; // Replace with your email address
+    $phpmailer->Password = '*********'; // Replace with your actual email password
+    $phpmailer->SMTPSecure = 'ssl'; // Replace with 'tls' or 'ssl' as required
+    $phpmailer->From = 'you@yours.com'; // Replace with your email address
+    $phpmailer->FromName = 'Your Name'; // Replace with your name or site name
+    $phpmailer->SMTPDebug = 0; // Set to 2 for debugging, 0 for production
+}
+
+// Set the "From" email address and name
+add_filter('wp_mail_from', function($original_email_address) {
+    return 'you@yours.com';                     // Replace with your email address
+});
+
+add_filter('wp_mail_from_name', function($original_email_from) {
+    return 'Your Name';                 // Replace with your name or site name
+});
