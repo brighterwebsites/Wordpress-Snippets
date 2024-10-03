@@ -1,0 +1,27 @@
+
+<?php
+
+//Remove Specific Image Sizes,  Disable Thumbnail Size Creation: Resize uploaded images
+
+
+//1. Remove Specific Image Sizes:
+// Function to remove specific image sizes
+function remove_default_image_sizes() {
+    // Remove default image sizes
+   // remove_image_size('thumbnail'); // Removes Thumbnail (150 x 150)
+   // remove_image_size('medium');    // Removes Medium (300 x 300 max)
+   //remove_image_size('medium_large')  // Removesmedium_large ( 768px x * )
+   //  remove_image_size('large');     // Removes Large (1024 x 1024 max)
+    remove_image_size('1536x1536');     // Removes 1536x1536 ( 1536px x 1536px )
+    remove_image_size('2048x2048');     // Removes 2048x2048 ( 2048px x 2048px )
+    
+    // Add your custom image sizes here if you need them
+    // For example: add_image_size('custom-size', 800, 600, true);
+}
+add_action('init', 'remove_default_image_sizes');
+
+
+
+
+
+
