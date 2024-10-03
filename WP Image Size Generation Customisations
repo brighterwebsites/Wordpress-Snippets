@@ -1,10 +1,13 @@
 
 <?php
 
-//Remove Specific Image Sizes,  Disable Thumbnail Size Creation: Resize uploaded images
+//1. Remove Specific Image Sizes,  
+// 2. Disable Thumbnail Size Creation: 
+//3. Resize uploaded images
 
 
 //1. Remove Specific Image Sizes:
+
 // Function to remove specific image sizes
 function remove_default_image_sizes() {
     // Remove default image sizes
@@ -21,7 +24,89 @@ function remove_default_image_sizes() {
 add_action('init', 'remove_default_image_sizes');
 
 
+//2. Disable Thumbnail Size Creation:
+// Disable thumbnail size creation
+function disable_thumbnail_creation() {
+   // update_option('thumbnail_size_w', 0);
+   // update_option('thumbnail_size_h', 0);
+   // update_option('medium_size_w', 0);
+  //  update_option('medium_size_h', 0);
+  //  update_option('medium_large_size_w', 0);
+  //  update_option('medium_large_size_h', 0);
+  //  update_option('large_size_w', 0);
+  //  update_option('large_size_h', 0);
+    update_option('1536x1536_size_w', 0);
+    update_option('1536x1536_size_h', 0);
+    update_option('2048x2048_size_w', 0);
+    update_option('2048x2048_size_h', 0);
+    
+}
+add_action('init', 'disable_thumbnail_creation');
 
+
+//3. Resize uploaded images to 1024 pixels on the longest edge.
+
+function resize_uploaded_images($file) {
+    // Check if the file is an image
+    if (!preg_match('/^image\/(jpe?g|png|gif)$/', $file['type'])) {
+        return $file;
+    }
+
+    // Get the image dimensions
+    list($width, $height) = getimagesize($file['tmp_name']);
+    $max_dimension = 1024; // Max dimension on the longest edge
+
+    // Determine the new dimensions
+    if ($width > $height && $width > $max_dimension) {
+        $new_width = $max_dimension;
+        $new_height = intval($height * ($max_dimension / $width));
+    } elseif ($height > $width && $height > $max_dimension) {
+        $new_height = $max_dimension;
+        $new_width = intval($width * ($max_dimension / $height));
+    } else {
+        // If neither dimension exceeds the max, return the file as is
+        return $file;
+    }
+
+    // Load the image
+    switch ($file['type']) {
+        case 'image/jpeg':
+            $src = imagecreatefromjpeg($file['tmp_name']);
+            break;
+        case 'image/png':
+            $src = imagecreatefrompng($file['tmp_name']);
+            break;
+        case 'image/gif':
+            $src = imagecreatefromgif($file['tmp_name']);
+            break;
+        default:
+            return $file;
+    }
+
+    // Create a new image with the new dimensions
+    $dst = imagecreatetruecolor($new_width, $new_height);
+    imagecopyresampled($dst, $src, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+    // Save the new image
+    switch ($file['type']) {
+        case 'image/jpeg':
+            imagejpeg($dst, $file['tmp_name']);
+            break;
+        case 'image/png':
+            imagepng($dst, $file['tmp_name']);
+            break;
+        case 'image/gif':
+            imagegif($dst, $file['tmp_name']);
+            break;
+    }
+
+    // Free up memory
+    imagedestroy($src);
+    imagedestroy($dst);
+
+    return $file;
+}
+add_filter('wp_handle_upload_prefilter', 'resize_uploaded_images');
 
 
 
